@@ -3,8 +3,8 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const PORT = Number(process.env.PORT) ?? 3000
-const HOST = process.env.HOST ?? "127.0.0.1"
+const PORT = Number(process.env.PORT)
+const HOST = process.env.HOST
 
 const server = net.createServer((socket) => {
   console.log(`Client เชื่อมต่อ: ${socket.remoteAddress}:${socket.remotePort}`)
@@ -24,5 +24,5 @@ const server = net.createServer((socket) => {
 })
 
 server.listen(PORT, HOST, () => {
-  console.log(`TCP Server รันอยู่ที่ ${HOST}:${PORT}`)
+  console.log(`TCP Server running at ${HOST}:${PORT}`)
 })
