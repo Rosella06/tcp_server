@@ -1,28 +1,21 @@
-import net from 'net'
-import dotenv from 'dotenv'
+import { expressServer } from './api'
+import { plcServer } from './plc'
+import { SocketIoServer } from './socket'
+const portApi = 3000
+const portPlc = 2001
+const portSocket = 3001
 
-dotenv.config()
+function main() {
+    // for plc
+    const plc = plcServer()
+    plc.startPlcServer({ port: portPlc })
 
-const PORT = Number(process.env.PORT)
-const HOST = process.env.HOST
+    // for react 
+    const api = expressServer(plc)
+    api.startServer(portApi)
 
-const server = net.createServer((socket) => {
-  console.log(`Client เชื่อมต่อ: ${socket.remoteAddress}:${socket.remotePort}`)
-
-  socket.on('data', (data) => {
-    console.log('ได้รับข้อมูล:', data.toString())
-    socket.write(`ตอบกลับ: ${data}`)
-  })
-
-  socket.on('end', () => {
-    console.log('Client ตัดการเชื่อมต่อ')
-  })
-
-  socket.on('error', (err) => {
-    console.error('เกิดข้อผิดพลาด:', err)
-  })
-})
-
-server.listen(PORT, HOST, () => {
-  console.log(`TCP Server running at ${HOST}:${PORT}`)
-})
+    // for react 
+    const socketIo = SocketIoServer()
+    socketIo.startSocketIo(portSocket)
+}
+main()
