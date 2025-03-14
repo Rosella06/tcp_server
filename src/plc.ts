@@ -8,9 +8,9 @@ function plcServer() {
     function getStatusT(status: string, qty?: string): string {
         console.log("Received Status Code:", status);
         switch (status) {
-            case '01': return 'T01'; 
-            case '02': return 'T02'; 
-            case '03': return `T03 - ยาที่จัดได้ Q${qty}`; 
+            case '01': return 'ได้รับคำสั่งแล้ว'; 
+            case '02': return 'จ่ายยาสำเร็จ ครบตำมจำนวน'; 
+            case '03': return `จ่ายยาสำเร็จ แต่ไม่ครบตำมจำนวน Q${qty}`; 
             case '80': return 'ผิดพลำด เนื่องจากตัวควบคุมหลักไม่พร้อมใช้งาน';
             case '81': return 'ผิดพลำด เนื่องจากตัวควบคุมกลไกไม่พร้อมใช้งาน';
             case '82': return 'ผิดพลำด เนื่องจากสถานะตู้ไม่พร้อมใช้งาน';
@@ -34,7 +34,7 @@ function plcServer() {
                 const status = data.toString().split("T", 2)[1]?.substring(0, 2) || "00";
                 const response = getStatusT(status);
                 console.log('Status:', response);
-                socket.write(response);
+                // socket.write(response);
             });
 
             socket.on('close', () => {
