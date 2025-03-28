@@ -3,43 +3,43 @@ function getStatusT(status: string, qty?: string): {status: string, message: str
   switch (status) {
     case '01': return {
       status: '01',
-      message: 'ได้รับคำสั่งแล้ว'
+      message: 'ขาดการเชื่อมต่อจากเซิร์ฟเวอร์'
     };
     case '02': return {
       status: '02',
-      message: 'จ่ายยาสำเร็จ ครบตำมจำนวน'
+      message: 'ชุดคำสั่งไม่ถูกต้อง'
     };
     case '03': return {
       status: '03',
-      message: `จ่ายยาสำเร็จ แต่ไม่ครบตำมจำนวน Q${qty}`
+      message: 'Checksum ในชุดคำสั่งไม่ถูกต้อง (Sxx)'
     };
-    case '80': return {
-      status: '80',
-      message: 'ผิดพลาด เนื่องจากตัวควบคุมหลักไม่พร้อมใช้งาน'
+    case '04': return {
+      status: '04',
+      message: 'คาร์ทีเซียนแกนนอนไม่เข้าตำแหน่ง'
     };
-    case '81': return {
-      status: '81',
-      message: 'ผิดพลาด เนื่องจากตัวควบคุมกลไกไม่พร้อมใช้งาน'
+    case '05': return {
+      status: '05',
+      message: 'คาร์ทีเซียนแกนตั่งไม่เข้าตำแหน่ง'
     };
-    case '82': return {
-      status: '82',
-      message: 'ผิดพลาด เนื่องจากสถานะตู้ไม่พร้อมใช้งาน'
+    case '06': return {
+      status: '06',
+      message: 'กลไกหยิบขาไม่เข้าตำแหน่ง'
     };
-    case '83': return {
-      status: '83',
-      message: 'ผิดพลาด เนื่องจากพารามิเตอร์ไม่สอดคล้องกับฮาร์ดแวร์'
+    case '07': return {
+      status: '07',
+      message: 'คาร์ทีเซียนแกนนอนไม่เคลื่อนที่ไปยังโมดูล'
     };
-    case '90': return {
-      status: '90',
-      message: 'การทำงานของตัวควบคุมหลักล้มเหลว'
+    case '08': return {
+      status: '08',
+      message: 'คาร์ทีเซียนแกนตั่งไม่เคลื่อนที่ไปยังโมดูล'
     };
     case '91': return {
       status: '91',
-      message: 'การทำงานของตัวควบคุมกลไกล้มเหลว'
+      message: 'ได้รับคำสั่งแล้ว'
     };
     case '92': return {
       status: '92',
-      message: 'สถานะของตู้ล้มเหลว'
+      message: `จ่ายยาสำเร็จ และแสดงยาที่จัดได้ใน Q${qty}`
     };
     default: return {
       status: '00',

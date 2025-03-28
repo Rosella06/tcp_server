@@ -1,5 +1,6 @@
 import * as net from 'net';
 import { resolve } from 'path';
+// import getStatusTs from "./constants"
 
 function plcServer() {
     let server: net.Server | null = null;
@@ -8,17 +9,18 @@ function plcServer() {
     function getStatusT(status: string, qty?: string): string {
         console.log("Received Status Code:", status);
         switch (status) {
-            case '01': return 'ได้รับคำสั่งแล้ว'; 
-            case '02': return 'จ่ายยาสำเร็จ ครบตำมจำนวน'; 
-            case '03': return `จ่ายยาสำเร็จ แต่ไม่ครบตำมจำนวน Q${qty}`; 
-            case '80': return 'ผิดพลำด เนื่องจากตัวควบคุมหลักไม่พร้อมใช้งาน';
-            case '81': return 'ผิดพลำด เนื่องจากตัวควบคุมกลไกไม่พร้อมใช้งาน';
-            case '82': return 'ผิดพลำด เนื่องจากสถานะตู้ไม่พร้อมใช้งาน';
-            case '83': return 'ผิดพลำด เนื่องจากพารามิเตอร์ไม่สอดคล้องกับฮาร์ดแวร์';
-            case '90': return 'การทำงานของตัวควบคุมหลักล้มเหลว';
-            case '91': return 'การทำงานของตัวควบคุมกลไกล้มเหลว';
-            case '92': return 'สถานะของตู้ล้มเหลว';
-            default: return 'T00'; 
+    
+            case '01': return 'ขาดการเชื่อมต่อจากเซิร์ฟเวอร์'; 
+            case '02': return 'ชุดคำสั่งไม่ถูกต้อง'; 
+            case '03': return `Checksum ในชุดคำสั่งไม่ถูกต้อง (Sxx)`; 
+            case '04': return 'คาร์ทีเซียนแกนนอนไม่เข้าตำแหน่ง';
+            case '05': return 'คาร์ทีเซียนแกนตั่งไม่เข้าตำแหน่ง';
+            case '06': return 'กลไกหยิบขาไม่เข้าตำแหน่ง';
+            case '07': return 'คาร์ทีเซียนแกนนอนไม่เคลื่อนที่ไปยังโมดูล';
+            case '08': return 'คาร์ทีเซียนแกนตั่งไม่เคลื่อนที่ไปยังโมดูล';
+            case '91': return 'ได้รับคำสั่งแล้ว';
+            case '92': return `จ่ายยาสำเร็จ และแสดงยาที่จัดได้ใน Q${qty}`;
+            default: return 'T00';
         }
     }
 

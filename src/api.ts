@@ -46,8 +46,14 @@ function expressServer(plcServer: PlcServer) {
             //     }
             // });
             c?.once('data', (data) => {
-                res.json({ message: 'Data received and sent to PLC', data: data.toString() });
-            });
+                const responseMessage = data.toString();
+                // console.log('✅ PLC Response:', responseMessage);
+                res.json({ 
+                    message: 'จัดยาเสร็จ', 
+                    floor: body.floor, 
+                    position: body.position 
+                });
+            });            
         });
     }
     
