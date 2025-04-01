@@ -1,54 +1,55 @@
-import express from 'express';
 import { Server as SocketIOServer } from 'socket.io';
 import http from 'http';
+import express from 'express';
 
-function SocketIoServer() {
-    let io: null | SocketIOServer = null;
+class SocketIoService {
+    private static instance: SocketIoService;
+    private io: SocketIOServer | null = null;
+    private server: http.Server | null = null;
 
-    function createSocketServer() {
-        const server = http.createServer();
-        const io = new SocketIOServer(server, {
-            cors: {
-                origin: "*",
-                methods: ["GET", "POST"],
-                allowedHeaders: [],
-                credentials: false
-            }
-        });
+    private constructor() {}
 
-        return io;
+    public static getInstance(): SocketIoService {
+        if (!SocketIoService.instance) {
+            SocketIoService.instance = new SocketIoService();
+        }
+        return SocketIoService.instance;
     }
 
-    function startSocketIo(port: number) {
-        try {
-
-            io = createSocketServer();
-            io.listen(port)
-            io.httpServer.on('listening', () => {
-                console.log(`🚀 React Socket Server started on port :${port}`);
+    public initialize(server: http.Server) {
+        if (!this.io) {
+            this.io = new SocketIOServer(server, {
+                cors: {
+                    origin: "*",
+                    methods: ["GET", "POST"],
+                    allowedHeaders: [],
+                    credentials: false
+                }
             });
 
-            console.log('start socket io');
-
-            io.on('connection', (socket) => {
+            this.io.on('connection', (socket) => {
                 console.log('A user connected:', socket.id);
                 socket.emit('message', 'Hello from server');
+
                 socket.on('clientMessage', (data) => {
                     console.log('Message from client:', data);
                 });
+
                 socket.on('disconnect', () => {
                     console.log('A user disconnected');
                 });
             });
-        }
-        catch (ex) {
-            console.log('error socket server', ex)
+
+            console.log('✅ Socket.IO initialized');
         }
     }
 
-    return {
-        startSocketIo
-    };
+    public getIO(): SocketIOServer {
+        if (!this.io) {
+            throw new Error('Socket.IO has not been initialized. Call initialize(server) first.');
+        }
+        return this.io;
+    }
 }
 
-export { SocketIoServer };
+export default SocketIoService;

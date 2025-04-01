@@ -34,7 +34,7 @@ function expressServer(plcServer: PlcServer) {
             const sum = pad(sumValue, 2).slice(-2);
             const message = `B${pad(body.container, 2)}R${pad(body.floor, 2)}C${pad(body.position, 2)}Q${pad(body.qty, 4)}L01M01T00N${running}D4500S${sum}`;
             
-            console.log('📤 Sending...', message);
+        
     
             const c = plcServer.sendToPLC(message);
             let responseSent = false;
